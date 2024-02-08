@@ -1,0 +1,21 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "email" TEXT NOT NULL,
+    "passwd" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Todo" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "todo" TEXT NOT NULL,
+    "content" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "done" BOOLEAN NOT NULL DEFAULT false,
+    "userId" INTEGER NOT NULL,
+    CONSTRAINT "Todo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
