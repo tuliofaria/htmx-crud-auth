@@ -1,7 +1,14 @@
 {% layout "layouts/app.liquid" %}
 
 {% block content %}
+<form action="/app/todos" method="post" hx-target="#todosWrapper" hx-post="/app/todos" hx-swap="afterbegin" hx-on::after-request="this.reset()">
+  <input type="text" name="title" class="border p-4 m-4" />
 <ul>
+
+<div id="todosWrapper">
+
+</div>
+
 {% for user in users %}
     <li>{{ user.email }}</li>
   {% endfor %}

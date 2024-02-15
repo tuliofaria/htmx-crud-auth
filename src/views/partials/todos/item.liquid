@@ -1,0 +1,3 @@
+<div class="item border p-2 mx-2">
+    <input value="{{title}}" type="checkbox" hx-put="/app/todos/{{ title }}" {{checked}} hx-target="closest .item" hx-swap="outerHTML" /> {{ title }}
+</div>
