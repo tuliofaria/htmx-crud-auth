@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 import { hash } from "bcrypt";
+import { prisma } from "../db";
 
 const secret = process.env.JWT_SECRET || "supersecretchangeitlater";
 
@@ -19,16 +20,15 @@ authController.get("/signin", (req: Request, res: Response) => {
 
 authController.post("/signup", async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  /*const user = await prisma.user.create({
-      data: {
-        email,
-        passwd: password,
-      },
-    });*/
-  // Token - JWT
   const hashedPassword = await hash(password, 10);
-  console.log(hashedPassword);
-  const token = sign({ email }, secret, { expiresIn: "1h" });
+  const user = await prisma.user.create({
+    data: {
+      email,
+      passwd: hashedPassword,
+    },
+  });
+
+  const token = sign({ email, id: user.id }, secret, { expiresIn: "1h" });
   res.cookie("token", token, { maxAge: 1 * 60 * 60 * 1000, httpOnly: true });
   res.header("hx-redirect", "/app");
   res.send("");

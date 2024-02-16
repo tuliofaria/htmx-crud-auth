@@ -1,3 +1,4 @@
-<div class="item border p-2 mx-2">
-    <input value="{{title}}" type="checkbox" hx-put="/app/todos/{{ title }}" {{checked}} hx-target="closest .item" hx-swap="outerHTML" /> {{ title }}
+<div class="item border p-2 mx-2 flex gap-2">
+    <input name="done" value="{{todo.id}}" type="checkbox" hx-put="/app/todos/{{ todo.id }}" {% if todo.done %}checked{% endif %} hx-target="closest .item" hx-swap="outerHTML" />
+    {% render './title.liquid', todo: todo %}
 </div>

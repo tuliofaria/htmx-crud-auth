@@ -6,7 +6,9 @@
 <ul>
 
 <div id="todosWrapper">
-
+  {% for todo in todos %}
+  {% render './partials/todos/item.liquid', todo: todo %}
+  {% endfor %}
 </div>
 
 {% for user in users %}
