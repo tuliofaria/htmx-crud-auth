@@ -1,0 +1,10 @@
+<div class="border m-2 p-2 flex gap-2">
+    <input
+        type="checkbox"
+        name="done"
+        value="{{ todo.id }}"
+        hx-put="/app/todos/{{ todo.id }}"
+        {% if todo.done %} checked {% endif  %}
+    />
+    {% render 'partials/todos/todo-title.liquid', todo: todo %}
+</div>

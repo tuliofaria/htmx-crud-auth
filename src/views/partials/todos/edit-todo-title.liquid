@@ -1,0 +1,12 @@
+<form 
+    hx-put="/app/todos/{{ todo.id }}/title"
+    hx-swap="outerHTML"
+    hx-target="this"
+>
+    <input
+        type="text"
+        class="border p-4"
+        name="todo"
+        value="{{ todo.todo }}"
+    />
+</form>

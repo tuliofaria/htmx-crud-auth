@@ -1,9 +1,23 @@
 {% layout "layouts/app.liquid" %}
 
 {% block content %}
-<ul>
-{% for user in users %}
-    <li>{{ user.email }}</li>
-  {% endfor %}
-  </ul>
-{% endblock %}
+
+<form
+  action="/app/todos"
+  method="post"
+  hx-post="/app/todos"
+  hx-target="#todosWrapper"
+  hx-swap="afterbegin"
+  hx-on::after-request="this.reset()"
+>
+  <input
+    class="border border-gray-400 p-2 w-full mx-8"
+    type="text" name="todo" />
+</form>
+
+<div id="todosWrapper">
+  {% for todo in todos %}
+      {% render './partials/todos/todo-item.liquid', todo: todo %}
+    {% endfor %}
+  {% endblock %}
+</div>
