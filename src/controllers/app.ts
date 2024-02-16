@@ -1,11 +1,12 @@
 import { Router, Request, Response } from "express";
 import { prisma } from "../db";
-import { decode } from "jsonwebtoken";
+import { decode, verify } from "jsonwebtoken";
+import { secret } from "./auth";
 
 export const appController = Router();
 
 appController.use((req: Request, res: Response, next) => {
-  const payload = decode(req.cookies.token) as { id: string };
+  const payload = verify(req.cookies.token, secret) as { id: string };
   if (!payload) {
     return res.redirect("/signin");
   }

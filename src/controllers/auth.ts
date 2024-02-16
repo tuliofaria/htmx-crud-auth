@@ -1,14 +1,28 @@
 import { Router, Request, Response } from "express";
 import { sign } from "jsonwebtoken";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { prisma } from "../db";
 
-const secret = process.env.JWT_SECRET || "supersecretchangeitlater";
+export const secret = process.env.JWT_SECRET || "supersecretchangeitlater";
 
 export const authController = Router();
 
 authController.post("/signin", async (req: Request, res: Response) => {
-  res.send({ ok: 1 });
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (user && (await compare(password, user.passwd))) {
+    const token = sign({ email, id: user.id }, secret, { expiresIn: "1h" });
+    res.cookie("token", token, { maxAge: 1 * 60 * 60 * 1000, httpOnly: true });
+    res.header("hx-redirect", "/app");
+    return res.send("");
+  }
+  res.statusCode = 404;
+  res.send("");
 });
 
 authController.get("/signin", (req: Request, res: Response) => {
